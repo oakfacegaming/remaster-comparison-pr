@@ -19,37 +19,45 @@
             align-items: center;
             padding: 2rem;
         }
-        .controls {
-            margin-bottom: 20px;
-            text-align: center;
-            background: #1e1e1e;
-            padding: 15px 30px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-        select {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #2a2a2a;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        select:hover {
-            border-color: #888;
-        }
         img-comparison-slider {
             max-width: 1920px;
             width: 100%;
             border: 2px solid #333;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
         }
         img {
             width: 100%;
             height: auto;
+        }
+        /* Navigation Controls */
+        .nav-arrows {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #1e1e1e;
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid #333;
+        }
+        .nav-btn {
+            background-color: transparent;
+            color: #ffffff;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0 10px;
+        }
+        .nav-btn:hover {
+            color: #4CAF50;
+        }
+        #counter {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
         }
     </style>
 </head>
@@ -57,33 +65,20 @@
     <h2>Battlefield 2: Project Reality (2013) - AI Restoration</h2>
     <p>Original 540p Twitch VOD (Left) vs. 1080p GameUpV2 Upscale (Right)</p>
     
-    <div class="controls">
-        <label for="frameSelect"><strong>Select Scene: </strong></label>
-        <select id="frameSelect">
-            <option value="512">Timestamp: 512</option>
-            <option value="954">Timestamp: 954</option>
-            <option value="1302">Timestamp: 1302</option>
-            <option value="1629">Timestamp: 1629</option>
-            <option value="1815">Timestamp: 1815</option>
-            <option value="3119">Timestamp: 3119</option>
-            <option value="3858">Timestamp: 3858</option>
-            <option value="4001">Timestamp: 4001</option>
-            <option value="4707">Timestamp: 4707</option>
-            <option value="4752">Timestamp: 4752</option>
-            <option value="5948">Timestamp: 5948</option>
-            <option value="10009">Timestamp: 10009</option>
-            <option value="100012">Timestamp: 100012</option>
-        </select>
-    </div>
-
-    <!-- The slider component defaults to the first option (512) -->
     <img-comparison-slider>
       <img slot="first" id="img-original" src="512.png" alt="Original 540p" />
       <img slot="second" id="img-upscaled" src="512_up.jpg" alt="Upscaled 1080p" />
     </img-comparison-slider>
 
+    <!-- Arrow Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-btn" id="prevBtn" title="Previous Image">&#10094;</button>
+        <span id="counter">1 / 13</span>
+        <button class="nav-btn" id="nextBtn" title="Next Image">&#10095;</button>
+    </div>
+
     <script>
-        // Exact filename mapping to handle case-sensitivity differences on GitHub Pages
+        // Exact filename mapping
         const fileMap = {
             "512": "512_up.jpg",
             "954": "954_up.jpg",
@@ -96,19 +91,36 @@
             "4707": "4707_up.jpg",
             "4752": "4752_up.jpg",
             "5948": "5948_up.jpg",
-            "10009": "10009_Up.jpg", // Note the capital 'U'
+            "10009": "10009_Up.jpg",
             "100012": "100012_up.jpg"
         };
 
-        const select = document.getElementById('frameSelect');
+        const keys = Object.keys(fileMap);
+        let currentIndex = 0;
+
         const imgOriginal = document.getElementById('img-original');
         const imgUpscaled = document.getElementById('img-upscaled');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const counter = document.getElementById('counter');
 
-        // Update the images when a new option is selected
-        select.addEventListener('change', (e) => {
-            const baseName = e.target.value;
+        function updateSlider() {
+            const baseName = keys[currentIndex];
             imgOriginal.src = baseName + ".png";
             imgUpscaled.src = fileMap[baseName];
+            counter.innerText = (currentIndex + 1) + " / " + keys.length;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            // Loop back to the end if clicking previous on the first image
+            currentIndex = (currentIndex - 1 + keys.length) % keys.length;
+            updateSlider();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            // Loop back to the start if clicking next on the last image
+            currentIndex = (currentIndex + 1) % keys.length;
+            updateSlider();
         });
     </script>
 </body>
