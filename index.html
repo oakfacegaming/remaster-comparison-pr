@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battlefield 2: Project Reality AI Remaster</title>
+    
+    <!-- Load the img-comparison-slider library -->
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css"/>
+    
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+            background: #1e1e1e;
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        select {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #2a2a2a;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        select:hover {
+            border-color: #888;
+        }
+        img-comparison-slider {
+            max-width: 1920px;
+            width: 100%;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Battlefield 2: Project Reality (2013) - AI Restoration</h2>
+    <p>Original 540p Twitch VOD (Left) vs. 1080p GameUpV2 Upscale (Right)</p>
+    
+    <div class="controls">
+        <label for="frameSelect"><strong>Select Scene: </strong></label>
+        <select id="frameSelect">
+            <option value="512">Timestamp: 512</option>
+            <option value="954">Timestamp: 954</option>
+            <option value="1302">Timestamp: 1302</option>
+            <option value="1629">Timestamp: 1629</option>
+            <option value="1815">Timestamp: 1815</option>
+            <option value="3119">Timestamp: 3119</option>
+            <option value="3858">Timestamp: 3858</option>
+            <option value="4001">Timestamp: 4001</option>
+            <option value="4707">Timestamp: 4707</option>
+            <option value="4752">Timestamp: 4752</option>
+            <option value="5948">Timestamp: 5948</option>
+            <option value="10009">Timestamp: 10009</option>
+            <option value="100012">Timestamp: 100012</option>
+        </select>
+    </div>
+
+    <!-- The slider component defaults to the first option (512) -->
+    <img-comparison-slider>
+      <img slot="first" id="img-original" src="512.png" alt="Original 540p" />
+      <img slot="second" id="img-upscaled" src="512_up.jpg" alt="Upscaled 1080p" />
+    </img-comparison-slider>
+
+    <script>
+        // Exact filename mapping to handle case-sensitivity differences on GitHub Pages
+        const fileMap = {
+            "512": "512_up.jpg",
+            "954": "954_up.jpg",
+            "1302": "1302_up.jpg",
+            "1629": "1629_up.jpg",
+            "1815": "1815_up.jpg",
+            "3119": "3119_up.jpg",
+            "3858": "3858_up.jpg",
+            "4001": "4001_up.jpg",
+            "4707": "4707_up.jpg",
+            "4752": "4752_up.jpg",
+            "5948": "5948_up.jpg",
+            "10009": "10009_Up.jpg", // Note the capital 'U'
+            "100012": "100012_up.jpg"
+        };
+
+        const select = document.getElementById('frameSelect');
+        const imgOriginal = document.getElementById('img-original');
+        const imgUpscaled = document.getElementById('img-upscaled');
+
+        // Update the images when a new option is selected
+        select.addEventListener('change', (e) => {
+            const baseName = e.target.value;
+            imgOriginal.src = baseName + ".png";
+            imgUpscaled.src = fileMap[baseName];
+        });
+    </script>
+</body>
+</html>
